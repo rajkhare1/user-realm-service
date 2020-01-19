@@ -1,7 +1,5 @@
 package com.raj.rest.webservices.exception;
 
-import java.util.Date;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +11,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.raj.rest.webservices.user.UserNotFoundException;
+import com.raj.rest.webservices.user.exception.DuplicateRealmNameException;
+import com.raj.rest.webservices.user.exception.InvalidRealmNameException;
 
 @ControllerAdvice
 @RestController
@@ -40,7 +40,23 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		Error error = new Error("Validation Failed");
 		
 		 return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+		 
 	}
- 
+	
+	@ExceptionHandler(DuplicateRealmNameException.class)
+	public final ResponseEntity<Object> handleDuplicateRealmNameException(DuplicateRealmNameException ex, WebRequest request) {
+		
+		Error error = new Error("DuplicateRealmName");
+		
+		 return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(InvalidRealmNameException.class)
+	public final ResponseEntity<Object> handleInvalidRealmNameException(InvalidRealmNameException ex, WebRequest request) {
+		
+		Error error = new Error("InvalidRealmName");
+		
+		 return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+	}
 	
 }

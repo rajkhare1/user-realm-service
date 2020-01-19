@@ -33,6 +33,7 @@ public class User implements Serializable{
 	public User() {
 		
 	}
+	
 
 
 
@@ -80,6 +81,15 @@ public class User implements Serializable{
 
 	public void setKey(String key) {
 		this.key = key;
+	}
+
+
+
+
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", description=" + description + ", key=" + key + "]";
 	}
 	
 	

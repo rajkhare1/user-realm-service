@@ -1,4 +1,4 @@
-package com.raj.rest.webservices.user;
+package com.raj.rest.webservices.user.controller;
 
 import java.net.URI;
 import java.util.List;
@@ -16,8 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.raj.rest.webservices.user.User;
+import com.raj.rest.webservices.user.UserRepository;
+import com.raj.rest.webservices.user.exception.DuplicateRealmNameException;
+import com.raj.rest.webservices.user.exception.InvalidRealmNameException;
+
 @RestController
-public class UserRealmResource {
+public class UserRealmController {
 	
 	@Autowired
 	private UserRepository userRepo;
@@ -36,14 +41,21 @@ public class UserRealmResource {
 		return user;
 	}
 	
-	@DeleteMapping("/service/user/realm/{id}")
-	public void deleteUser(@PathVariable int id) {
-		     userRepo.deleteById(id); 
 		
-	}
 	
 	@PostMapping("/service/user/realm")
 	public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
+		User findByName = userRepo.findByName(user.getName());
+		
+		if(findByName!=null) {
+		    if(user.getName().equals(findByName.getName())) {
+			throw new DuplicateRealmNameException("DuplicateRealmName");
+		    }
+		}
+		
+		if(user.getName()==null) {
+			throw new InvalidRealmNameException();
+		}
 		User saveUser = userRepo.save(user);
 		
 		URI location = ServletUriComponentsBuilder
