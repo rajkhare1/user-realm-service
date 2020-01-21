@@ -29,7 +29,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	@ExceptionHandler(UserNotFoundException.class)
 	public final ResponseEntity<Object> handleAllException(UserNotFoundException ex, WebRequest request) {
 		
-		Error error = new Error(ex.getMessage());
+		Error error = new Error("RealmNotFound");
 		
 		 return new ResponseEntity(error, HttpStatus.NOT_FOUND);
 	}

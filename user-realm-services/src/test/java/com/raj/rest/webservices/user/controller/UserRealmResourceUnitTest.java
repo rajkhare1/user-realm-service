@@ -55,7 +55,7 @@ public class UserRealmResourceUnitTest {
 			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 			System.out.println(result.getResponse());
 			
-			String expected = "{id:C1,name:realmName,realmDescription:realmKey}";
+			String expected = "{id:1,name:realmName,realmDescription:realmKey}";
 			
 			JSONAssert.assertNotEquals(expected,result.getResponse()
 					.getContentAsString(), false);
@@ -63,29 +63,51 @@ public class UserRealmResourceUnitTest {
 	}
 	
 	@Test
-	public void testCreateUser() throws Exception{
+	public void testRetrieveUser() throws Exception{
 		
-//		 User user = new User();
-//		 ResponseEntity<User> responseEntity;
-//		 
-//		 user.setName("realmName");
-//		 user.setDescription("realmDescription");
-//		 
-//		 when(userRepoMock.save(user)).thenReturn(user);
-//		 
-//		 RequestBuilder requestBuilder = MockMvcRequestBuilders.post(
+		User user = new User();
+		user.setId(1);
+		user.setName("realmName");
+		user.setDescription("realmDescription");
+		user.setKey("realmKey");
+		
+		 when(userRepoMock.findById(user.getId())).getMock();
+		 
+		 RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
+					"/service/user/realm/1").accept(
+					MediaType.APPLICATION_JSON);
+			
+			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+			System.out.println(result.getResponse());
+			
+			String expected = "{id:1,name:realmName,realmDescription:realmKey}";
+			
+			JSONAssert.assertNotEquals(expected,result.getResponse()
+					.getContentAsString(), false);
+
+	}
+	
+	
+	@Test
+	public void testCreateUser() throws Exception{
+//			User user = new User();
+//			user.setName("realmName");
+//			user.setDescription("realmDescription");
+//	
+//			when(userRepoMock.save(user)).thenReturn(user);
+//			
+//			RequestBuilder requestBuilder = MockMvcRequestBuilders.post(
 //					"/service/user/realm").accept(
 //					MediaType.APPLICATION_JSON).content(exampleJson)
-//				 .contentType(MediaType.APPLICATION_JSON);
+//					.contentType(MediaType.APPLICATION_JSON);;
 //			
 //			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+//			System.out.println(result.getResponse());
 //			MockHttpServletResponse response = result.getResponse();
 //			
 //			assertEquals(HttpStatus.CREATED.value(), response.getStatus());
-//
-//			System.out.println(result.getResponse());
-//			
-//			assertEquals("http://localhost//service/user/realm/1",
+//	
+//			assertEquals("http://localhost/service/user/realm",
 //					response.getHeader(HttpHeaders.LOCATION));
 
 	}

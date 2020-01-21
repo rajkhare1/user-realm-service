@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.raj.rest.webservices.user.User;
+import com.raj.rest.webservices.user.UserNotFoundException;
 import com.raj.rest.webservices.user.UserRepository;
 import com.raj.rest.webservices.user.exception.DuplicateRealmNameException;
 import com.raj.rest.webservices.user.exception.InvalidRealmNameException;
@@ -33,12 +34,10 @@ public class UserRealmController {
 	}
 	
 	@GetMapping("/service/user/realm/{id}")
-	public Optional<User> retrieveUser(@PathVariable int id) {
-		Optional<User> user = userRepo.findById(id);
-		if(!user.isPresent())
-			throw new Error("Id- "+id);
-		
-		return user;
+	public User retrieveUser(@PathVariable int id) {
+
+		return userRepo.findById(id)
+				.orElseThrow(() -> new UserNotFoundException("Id- "+id));
 	}
 	
 		
